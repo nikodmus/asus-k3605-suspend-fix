@@ -1,0 +1,16 @@
+# Asus Vivobook 16X (K3605*) - fix for hard freeze when resuming from suspend
+# https://github.com/nikodmus/asus-k3605-suspend-fix
+#
+# Some PCI devices on this laptop never come back from D3cold (power fully cut)
+# during s2idle/deep suspend. This rule keeps them out of D3cold. It only
+# matches on K3605 boards, so it does nothing on other machines.
+
+# NVMe SSD (behind Intel VMD) + its upstream PCIe port.
+# Without this the whole machine freezes on resume.
+ACTION=="add", SUBSYSTEM=="pci", ATTR{[dmi/id]board_name}=="K3605*", ATTR{class}=="0x010802", \
+  ATTR{d3cold_allowed}="0", RUN+="/bin/sh -c 'echo 0 > /sys%p/../d3cold_allowed'"
+
+# MediaTek MT7922 Wi-Fi + its upstream PCIe port.
+# Without this Wi-Fi is dead after resume ("driver own failed").
+ACTION=="add", SUBSYSTEM=="pci", ATTR{[dmi/id]board_name}=="K3605*", ATTR{vendor}=="0x14c3", ATTR{device}=="0x7922", \
+  ATTR{d3cold_allowed}="0", RUN+="/bin/sh -c 'echo 0 > /sys%p/../d3cold_allowed'"
