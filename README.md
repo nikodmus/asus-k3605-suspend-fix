@@ -9,8 +9,6 @@ MT7922 Wi-Fi card has the same problem, but it "only" dies instead of freezing t
 
 **Fix:** one udev rule that keeps those devices out of D3cold.
 
-> Suomeksi: [lyhyt kuvaus alempana](#suomeksi).
-
 ## Who this is for
 
 Tested on:
@@ -144,6 +142,15 @@ upstream commit `cdea98bf1fae`). The K3605 is not covered by that quirk – it h
 different bridge (VMD) and different device IDs. A proper kernel quirk for the K3605
 would make this repo unnecessary.
 
+### Reports
+
+- Kernel [bug 222104](https://bugzilla.kernel.org/show_bug.cgi?id=222104) – this issue
+  (NVMe behind VMD not returning from D3cold on the K3605VU), with lspci/dmidecode/dmesg attached
+- Kernel [bug 220399](https://bugzilla.kernel.org/show_bug.cgi?id=220399) – the MT7922 Wi-Fi part
+  on the K3605ZU
+- Arch forum: [thread about the K3605VV](https://bbs.archlinux.org/viewtopic.php?id=292404) and
+  [the fix posted there](https://bbs.archlinux.org/viewtopic.php?pid=2311511#p2311511)
+
 ## Diagnostic script
 
 ```bash
@@ -164,15 +171,6 @@ terminal on the affected laptop. The assistant read the logs, proposed each test
 the scripts; I ran every test that needed root, rebooted after each freeze, reported
 results and decided what to try next. Every claim in this README is backed by a log line
 from those runs.
-
-## Suomeksi
-
-Asus Vivobook 16X (K3605) ei herännyt Linuxissa lepotilasta: kone jumittui kokonaan.
-Syy selvitettiin `pm_test`- ja `pm_trace`-työkaluilla sekä puolittamalla epäiltyjä
-laitteita: NVMe-levy (Intel VMD:n takana) ja MT7922-WLAN eivät palaa D3cold-tilasta.
-Korjaus on yksi udev-sääntö, joka estää näitä laitteita menemästä D3cold-tilaan.
-Asennus: kopioi `99-asus-k3605-suspend-fix.rules` kansioon `/etc/udev/rules.d/` ja
-käynnistä kone uudelleen.
 
 ## License
 
