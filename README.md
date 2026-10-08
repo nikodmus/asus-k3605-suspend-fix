@@ -28,6 +28,11 @@ Very likely the same issue as the unsolved
 [Arch forum thread about the K3605VV](https://bbs.archlinux.org/viewtopic.php?id=292404)
 (freeze after suspend on Arch, Debian, Fedora, Ubuntu; `sudo` hangs and network is broken
 on the distros that do wake up – which is what a dead SSD and dead Wi-Fi look like).
+The Wi-Fi part is also tracked in kernel
+[bug 220399](https://bugzilla.kernel.org/show_bug.cgi?id=220399) (K3605ZU, Alder Lake), where
+disabling D3cold for the MT7922 alone was enough. On the K3605VU (Raptor Lake) the NVMe behind VMD
+needs it too.
+
 If you have another K3605 variant, please open an issue and tell whether it worked.
 
 Things that **did not** help (so you can skip them): kernels 6.19 and 7.2.7, nouveau vs.
